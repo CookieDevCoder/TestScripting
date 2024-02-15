@@ -1,0 +1,45 @@
+<head>
+  <title>Raining Images</title>
+  <style>
+    body {
+      overflow: hidden;
+    }
+    .container {
+      position: relative;
+    }
+    .image {
+      position: absolute;
+      animation: rain 1s linear infinite;
+    }
+    @keyframes rain {
+      0% {
+        transform: translateY(-100px);
+      }
+      100% {
+        transform: translateY(100vh);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="image" src="image1.jpg" alt="Image 1">
+    <img class="image" src="image2.jpg" alt="Image 2">
+    <img class="image" src="image3.jpg" alt="Image 3">
+    <!-- Add more <img> tags with different images -->
+  </div>
+
+  <script>
+    // Optional: Dynamically add more images
+    const container = document.querySelector('.container');
+
+    // Change the number in the for loop to specify the number of images you want to add
+    for (let i = 4; i <= 10; i++) {
+      const img = document.createElement('img');
+      img.src = `image${i}.jpg`;
+      img.alt = `Image ${i}`;
+      img.classList.add('image');
+      container.appendChild(img);
+    }
+  </script>
+</body>

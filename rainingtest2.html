@@ -1,0 +1,68 @@
+<canvas id="canvas"></canvas>
+<style>
+    body > canvas {
+      background-color: rgb( 0, 64, 0);
+    }
+    </style>
+    <img id="bg" src="https://lh5.googleusercontent.com/UTHvOlLLZPhf1rqfkkcOy302B6KW_hr6ouRUpjEfzTRXvfq5ixgWccYldp9dYEwx_7IYRg1GDdZJl0KCDrkv5kE" style="display:none;">
+<!-- canvas fullscreen -->
+<script>
+    var lastTick = 0;
+var position = { x:0, y:0 };
+var positionsx = [];
+var positionsy = [];
+var bg = document.getElementById('bg');
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+const CookieSize = 64
+;
+const CookieDropNumber = 100;
+
+function update(gameTime) {
+    for(let i = 0; i < positionsx.length; i++){
+        positionsx[i] += (70 * gameTime.diff / 1000);
+	    positionsy[i] += (110 * gameTime.diff / 1000);
+	    if (positionsy[i] > canvas.height) {
+    		positionsy[i] = -CookieSize/2;
+            positionsx[i] = (Math.random() * 1.5 * canvas.width) - (canvas.width/2);
+	    }
+    }
+}
+
+function draw(gameTime) {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(let i = 0; i < CookieDropNumber; i++){
+	    ctx.drawImage(bg, positionsx[i], positionsy[i], CookieSize, CookieSize);
+    }
+}
+
+function loop(tick) {
+	var diff = tick - lastTick;
+	var gameTime = { tick:tick, diff:diff };
+	update(gameTime);
+	draw(gameTime);
+	requestAnimationFrame(loop);
+	lastTick = tick;
+}
+function sleep(ms) {
+    return new Promise(OnStart => setTimeout(OnStart, ms));
+}
+async function OnStart() {
+    bg.width = document.body.clientWidth-17.5;
+    bg.height = document.body.clientHeight-17.5;
+    canvas.width = document.body.clientWidth-17.5;
+    canvas.height = document.body.clientHeight-17.5;
+    console.log("HTML Started");
+    for(let i = 0; i < CookieDropNumber; i++) {
+        console.log("Creating Cookie... " + positionsx.length)
+        positionsx.push(Math.random() * canvas.width);
+        positionsy.push(-CookieSize);
+        console.log("Made Cookie, setting timer... " + positionsx.length + " with i = " + i);
+        await sleep(100);
+        console.log("Timer done"+ positionsx.length);
+    }
+    
+}
+requestAnimationFrame(loop);
+OnStart();
+</script>
